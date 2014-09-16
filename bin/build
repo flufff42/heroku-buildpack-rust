@@ -21,22 +21,16 @@ then
   exit 1
 fi
 
-if test -d $cache/rust-$ver/bin/rust
-then
-  echo "-----> Using Rust $ver"
-else
-  rm -rf $cache/* # be sure not to build up cruft
-  mkdir -p $cache/rust-$ver
-  cd $cache/rust-$ver
-  echo -n "-----> Installing rust $ver..."
-  curl -sO $rust
-  curl -sO $cargo
-  tar zxf $rust_tarball
-  tar zxf $cargo_tarball
-  rm -f $rust_tarball $cargo_tarball
-  echo "done"
-  cd $build
-fi
+mkdir -p $cache/rust-$ver
+cd $cache/rust-$ver
+echo -n "-----> Installing rust $ver..."
+curl -sO $rust
+curl -sO $cargo
+tar zxf $rust_tarball
+tar zxf $cargo_tarball
+rm -f $rust_tarball $cargo_tarball
+echo "done"
+cd $build
 
 # Make sure we have the C++ runtime libraries required by the Rust nightly
 # builds.
