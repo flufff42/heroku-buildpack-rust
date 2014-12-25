@@ -39,6 +39,6 @@ export PKG_CONFIG_PATH="/tmp/codon/vendor/lib/pkgconfig":$PKG_CONFIG_PATH
 
 cd $build
 
-rustc -v
+rustc -V
 cargo -V
 cargo build --release
