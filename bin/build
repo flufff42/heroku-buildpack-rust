@@ -3,16 +3,21 @@
 
 set -xeo pipefail
 
-ver=nightly
 mkdir -p "$1" "$2"
 build=$(cd "$1/" && pwd)
 cache=$(cd "$2/" && pwd)
+
+if [ -f $build/RUSTVERSION ]; then
+  folder=$(cat "$build/RUSTVERSION")
+  folder="$folder/"
+fi
+ver=nightly
 triple=x86_64-unknown-linux-gnu
 rust_tarball=rust-$ver-$triple.tar.gz
 cargo_tarball=cargo-nightly-$triple.tar.gz
-rust="https://static-rust-lang-org.s3.amazonaws.com/dist/$rust_tarball"
+rust="https://static-rust-lang-org.s3.amazonaws.com/dist/$folder$rust_tarball"
 #rust="http://people.mozilla.org/~acrichton/rust-nightly-x86_64-unknown-linux-gnu.tar.gz"
-cargo="https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/$cargo_tarball"
+cargo="https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/$folder$cargo_tarball"
 buildpack=$(dirname $(dirname $0))
 
 if test -e $build/bin && ! test -d $build/bin
@@ -35,7 +40,6 @@ cd $build
 export PATH=$cache/rust-$ver/rust-$ver-$triple/bin:$PATH
 export PATH=$cache/rust-$ver/cargo-nightly-$triple/bin:$PATH
 export LD_LIBRARY_PATH=$cache/rust-$ver/rust-$ver-$triple/lib:$LD_LIBRARY_PATH
-export PKG_CONFIG_PATH="/tmp/codon/vendor/lib/pkgconfig":$PKG_CONFIG_PATH
 
 cd $build
 
