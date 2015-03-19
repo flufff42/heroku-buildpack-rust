@@ -14,10 +14,7 @@ fi
 ver=nightly
 triple=x86_64-unknown-linux-gnu
 rust_tarball=rust-$ver-$triple.tar.gz
-cargo_tarball=cargo-nightly-$triple.tar.gz
-rust="https://static-rust-lang-org.s3.amazonaws.com/dist/$folder$rust_tarball"
-#rust="http://people.mozilla.org/~acrichton/rust-nightly-x86_64-unknown-linux-gnu.tar.gz"
-cargo="https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/$folder$cargo_tarball"
+rust="https://static.rust-lang.org/dist/$folder$rust_tarball"
 buildpack=$(dirname $(dirname $0))
 
 if test -e $build/bin && ! test -d $build/bin
@@ -30,16 +27,16 @@ mkdir -p $cache/rust-$ver
 cd $cache/rust-$ver
 echo -n "-----> Installing rust $ver..."
 curl -sO $rust
-curl -sO $cargo
 tar zxf $rust_tarball
-tar zxf $cargo_tarball
-rm -f $rust_tarball $cargo_tarball
+rm -f $rust_tarball
 echo "done"
 cd $build
 
-export PATH=$cache/rust-$ver/rust-$ver-$triple/bin:$PATH
-export PATH=$cache/rust-$ver/cargo-nightly-$triple/bin:$PATH
-export LD_LIBRARY_PATH=$cache/rust-$ver/rust-$ver-$triple/lib:$LD_LIBRARY_PATH
+$cache/rust-$ver/rust-$ver-$triple/install.sh \
+    --prefix $cache/rust-$ver/install
+
+export PATH=$cache/rust-$ver/install/bin:$PATH
+export LD_LIBRARY_PATH=$cache/rust-$ver/install/lib:$LD_LIBRARY_PATH
 
 cd $build
 
