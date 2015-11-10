@@ -33,8 +33,7 @@ echo "done"
 cd $build
 
 $cache/rust-$ver/rust-$ver-$triple/install.sh \
-    --prefix=$cache/rust-$ver/install \
-    --components=rustc,cargo
+    --prefix=$cache/rust-$ver/install
 
 export PATH=$cache/rust-$ver/install/bin:$PATH
 export LD_LIBRARY_PATH=$cache/rust-$ver/install/lib:$LD_LIBRARY_PATH
