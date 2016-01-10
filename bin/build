@@ -25,7 +25,7 @@ fi
 
 mkdir -p $cache/rust-$ver
 cd $cache/rust-$ver
-echo -n "-----> Installing rust $ver..."
+echo -n "-----> Installing rust $ver... ($rust)"
 curl -sO $rust
 tar zxf $rust_tarball
 rm -f $rust_tarball
